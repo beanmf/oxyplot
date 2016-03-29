@@ -1528,6 +1528,50 @@ namespace ExampleLibrary
             return model;
         }
 
+
+        /// <summary>
+        /// Fails to render the horizontal axis color ranges.
+        /// Based on Example ScatterSeries with RangeColorAxis
+        /// Fixed in RangeColorAxis.Render().  
+        /// </summary>
+        /// <returns></returns>
+        [Example("#767: RangeColorAxis doesn't render correctly when axis is horizontal")]
+        public static PlotModel RangeColorAxisTest()
+        {
+            int n = 1000;
+            var plotModel1 = new PlotModel
+            {
+                Title = string.Format("ScatterSeries and RangeColorAxis (n={0})", n),
+                Background = OxyColors.LightGray
+            };
+
+            plotModel1.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+
+            // vertical range color axis 
+            var rca = new RangeColorAxis { Position = AxisPosition.Right, Maximum = 2, Minimum = -2 };
+            rca.AddRange(0, 0.5, OxyColors.Blue);
+            rca.AddRange(-0.2, -0.1, OxyColors.Red);
+            plotModel1.Axes.Add(rca);
+
+            // horizontal range color axis 
+            var rca2 = new RangeColorAxis { Position = AxisPosition.Bottom, Maximum = 2, Minimum = -2 };
+            rca2.AddRange(0, 0.5, OxyColors.Blue);
+            rca2.AddRange(-0.2, -0.1, OxyColors.Red);
+            plotModel1.Axes.Add(rca2);
+
+            var s1 = new ScatterSeries { MarkerType = MarkerType.Square, MarkerSize = 6, };
+
+            var random = new Random(13);
+            for (int i = 0; i < n; i++)
+            {
+                double x = (random.NextDouble() * 2.2) - 1.1;
+                s1.Points.Add(new ScatterPoint(x, random.NextDouble()) { Value = x });
+            }
+
+            plotModel1.Series.Add(s1);
+            return plotModel1;
+        }
+
         /* NEW ISSUE TEMPLATE
           [Example("#123: Issue Description")]
           public static PlotModel IssueDescription()
